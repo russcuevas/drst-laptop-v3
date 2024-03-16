@@ -68,6 +68,10 @@ Route::get('/my_orders/{ReferenceNumber}', [MyOrderController::class, 'ShowMyOrd
     ->name('myordershow');
 Route::post('/cancel-myorders', [MyOrderController::class, 'CancelMyOrders'])->name('cancel-myorders');
 
+// NOTIFICATIONS
+Route::post('/mark-notification-seen', [HomeController::class, 'markNotificationCustomerSeen']);
+
+
 
 
 

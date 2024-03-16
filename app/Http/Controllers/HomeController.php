@@ -44,6 +44,32 @@ class HomeController extends Controller
         return view('page.home', compact('top_products', 'featured_products', 'notifications'));
     }
 
+    public function markNotificationCustomerSeen(Request $request)
+    {
+        if (!auth()->check()) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $referenceNumber = $request->input('referenceNumber');
+
+        $notification = DB::table('order_notifications')
+            ->join('orders', 'order_notifications.order_id', '=', 'orders.id')
+            ->where('orders.reference_number', $referenceNumber)
+            ->select('order_notifications.*')
+            ->first();
+
+        if ($notification) {
+            DB::table('order_notifications')
+                ->join('orders', 'order_notifications.order_id', '=', 'orders.id')
+                ->where('orders.reference_number', $referenceNumber)
+                ->update(['order_notifications.is_customer_seen' => true]);
+
+            return response()->json(['success' => 'Notification marked as seen.']);
+        } else {
+            return response()->json(['error' => 'Notification not found.'], 404);
+        }
+    }
+
 
 
     // view single product with its related product grain

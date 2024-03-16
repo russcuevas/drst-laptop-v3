@@ -140,7 +140,7 @@
     <script src="{{ asset('page/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('page/ajax/cart/update_cart.js')}}"></script>
     <script src="{{ asset('page/ajax/cart/delete_cart.js')}}"></script>
-    <script src="{{ asset('page/js/main.js') }}"></script>
+    {{-- <script src="{{ asset('page/js/main.js') }}"></script> --}}
 
 
     <!-- DataTables JavaScript -->
@@ -150,6 +150,26 @@
         $(document).ready(function() {
             $('#ordersTable').DataTable();
         });
+    </script>
+
+    <script>
+        function markNotificationCustomerSeen(referenceNumber) {
+            $.ajax({
+                type: "POST",
+                url: "/mark-notification-seen",
+                data: {
+                    referenceNumber: referenceNumber,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    window.location.href = "{{ route('myordershow', ['ReferenceNumber' => 'REPLACE_REFERENCE_NUMBER']) }}"
+                    .replace('REPLACE_REFERENCE_NUMBER', referenceNumber);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error marking notification as seen:", error);
+                }
+            });
+        }
     </script>
 </body>
 

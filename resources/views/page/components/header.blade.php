@@ -85,7 +85,7 @@
                                             <p style="text-align: center; margin-top: 10px; color: brown;">No inbox found</p>
                                         @else
                                             @foreach ($notifications as $notification)
-                                                <a href="#" class="notification__item">
+                                                <a href="#" onclick="markNotificationCustomerSeen('{{ $notification->reference_number }}')" class="notification__item">
                                                     <i class="fa fa-shopping-cart" aria-hidden="true"></i> <!-- Order icon -->
                                                     @if ($notification->message === "New orders")
                                                         You placed your orders {{ $notification->reference_number }}

@@ -135,14 +135,39 @@ class OrderController extends Controller
 
             // notifications
             $notificationMessage = "Updated order on process";
-            DB::table('order_notifications')
+
+            $existingNotification = DB::table('order_notifications')
                 ->join('orders', 'order_notifications.order_id', '=', 'orders.id')
                 ->where('orders.reference_number', $referenceNumber)
                 ->where('orders.invoice_number', $invoiceNumber)
-                ->update([
-                    'order_notifications.message' => $notificationMessage,
-                    'order_notifications.is_seen' => false // or 0
-                ]);
+                ->select('order_notifications.*')
+                ->first();
+
+            if ($existingNotification) {
+                DB::table('order_notifications')
+                    ->join('orders', 'order_notifications.order_id', '=', 'orders.id')
+                    ->where('orders.reference_number', $referenceNumber)
+                    ->where('orders.invoice_number', $invoiceNumber)
+                    ->update([
+                        'order_notifications.message' => $notificationMessage,
+                        'order_notifications.is_seen' => false,
+                        'order_notifications.is_customer_seen' => false
+                    ]);
+            } else {
+                $orderId = DB::table('orders')
+                    ->where('reference_number', $referenceNumber)
+                    ->where('invoice_number', $invoiceNumber)
+                    ->value('id');
+
+                if ($orderId) {
+                    DB::table('order_notifications')->insert([
+                        'order_id' => $orderId,
+                        'message' => $notificationMessage,
+                        'is_seen' => false,
+                        'is_customer_seen' => false,
+                    ]);
+                }
+            }
 
             $initialStatus = 'Placed orders';
         } elseif ($status === 'On the way') {
@@ -166,14 +191,42 @@ class OrderController extends Controller
                 ]);
 
             $notificationMessage = "Updated order on the way";
-            DB::table('order_notifications')
+
+            // Check if notification exists for the order
+            $existingNotification = DB::table('order_notifications')
                 ->join('orders', 'order_notifications.order_id', '=', 'orders.id')
                 ->where('orders.reference_number', $referenceNumber)
                 ->where('orders.invoice_number', $invoiceNumber)
-                ->update([
-                    'order_notifications.message' => $notificationMessage,
-                    'order_notifications.is_seen' => false // or 0
-                ]);
+                ->select('order_notifications.*')
+                ->first();
+
+            if ($existingNotification) {
+                // Update existing notification
+                DB::table('order_notifications')
+                    ->join('orders', 'order_notifications.order_id', '=', 'orders.id')
+                    ->where('orders.reference_number', $referenceNumber)
+                    ->where('orders.invoice_number', $invoiceNumber)
+                    ->update([
+                        'order_notifications.message' => $notificationMessage,
+                        'order_notifications.is_seen' => false,
+                        'order_notifications.is_customer_seen' => false
+                    ]);
+            } else {
+                // Insert new notification
+                $orderId = DB::table('orders')
+                    ->where('reference_number', $referenceNumber)
+                    ->where('invoice_number', $invoiceNumber)
+                    ->value('id');
+
+                if ($orderId) {
+                    DB::table('order_notifications')->insert([
+                        'order_id' => $orderId,
+                        'message' => $notificationMessage,
+                        'is_seen' => false,
+                        'is_customer_seen' => false,
+                    ]);
+                }
+            }
 
             $initialStatus = 'On process';
         } elseif ($status === 'Delivered') {
@@ -229,14 +282,43 @@ class OrderController extends Controller
                 ->update(['order_statuses.updated_at' => now()]);
 
             $notificationMessage = "Completed order";
-            DB::table('order_notifications')
+
+            // Check if notification exists for the order
+            $existingNotification = DB::table('order_notifications')
                 ->join('orders', 'order_notifications.order_id', '=', 'orders.id')
                 ->where('orders.reference_number', $referenceNumber)
                 ->where('orders.invoice_number', $invoiceNumber)
-                ->update([
-                    'order_notifications.message' => $notificationMessage,
-                    'order_notifications.is_seen' => false // or 0
-                ]);
+                ->select('order_notifications.*')
+                ->first();
+
+            if ($existingNotification) {
+                // Update existing notification
+                DB::table('order_notifications')
+                    ->join('orders', 'order_notifications.order_id', '=', 'orders.id')
+                    ->where('orders.reference_number', $referenceNumber)
+                    ->where('orders.invoice_number', $invoiceNumber)
+                    ->update([
+                        'order_notifications.message' => $notificationMessage,
+                        'order_notifications.is_seen' => false,
+                        'order_notifications.is_customer_seen' => false
+                    ]);
+            } else {
+                // Insert new notification
+                $orderId = DB::table('orders')
+                    ->where('reference_number', $referenceNumber)
+                    ->where('invoice_number', $invoiceNumber)
+                    ->value('id');
+
+                if ($orderId) {
+                    DB::table('order_notifications')->insert([
+                        'order_id' => $orderId,
+                        'message' => $notificationMessage,
+                        'is_seen' => false,
+                        'is_customer_seen' => false,
+
+                    ]);
+                }
+            }
 
             $initialStatus = 'On the way';
         }
