@@ -116,37 +116,41 @@
                             <li class="header">NOTIFICATIONS</li>
                             <li class="body">
                                 <ul class="menu" style="list-style: none">
-                                    @foreach($notifications as $notification)
-                                        <li>
-                                            @if($notification instanceof \App\Models\ProductNotifications)
-                                                <!-- Product Notification -->
-                                                <a href="#" onclick="markNotificationProduct('{{ $notification->id }}', '{{ $notification->product_id }}')">
-                                                    <div class="icon-circle bg-orange">
-                                                        <i class="material-icons">inventory_2</i>
-                                                    </div>
-                                                    <div class="menu-info">
-                                                        <h4>{{ $notification->product->product_name }} <br> <span style="color: brown">{{ $notification->message }}</span></h4>
-                                                        <p>
-                                                            <i class="material-icons">access_time</i> {{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}
-                                                        </p>
-                                                    </div>
-                                                </a>
-                                            @else
-                                                <!-- Order Notification -->
-                                                <a href="#" onclick="markNotificationSeen('{{ $notification->reference_number }}', '{{ $notification->invoice_number }}')">
-                                                    <div class="icon-circle bg-cyan">
-                                                        <i class="material-icons">add_shopping_cart</i>
-                                                    </div>
-                                                    <div class="menu-info">
-                                                        <h4>{{ $notification->reference_number }} <br> <span style="color: brown">{{ $notification->message }}</span></h4>
-                                                        <p>
-                                                            <i class="material-icons">access_time</i> {{ \Carbon\Carbon::parse($notification->notification_created_at)->diffForHumans() }}
-                                                        </p>
-                                                    </div>
-                                                </a>
-                                            @endif
-                                        </li>
-                                    @endforeach
+@if($notifications->isEmpty())
+                                        <li style="text-align: center; font-size: 15px; color: brown;">No inbox found</li>
+                                    @else
+                                        @foreach($notifications as $notification)
+                                            <li>
+                                                @if($notification instanceof \App\Models\ProductNotifications)
+                                                    <!-- Product Notification -->
+                                                    <a href="#" onclick="markNotificationProduct('{{ $notification->id }}', '{{ $notification->product_id }}')">
+                                                        <div class="icon-circle bg-orange">
+                                                            <i class="material-icons">inventory_2</i>
+                                                        </div>
+                                                        <div class="menu-info">
+                                                            <h4>{{ $notification->product->product_name }} <br> <span style="color: brown">{{ $notification->message }}</span></h4>
+                                                            <p>
+                                                                <i class="material-icons">access_time</i> {{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}
+                                                            </p>
+                                                        </div>
+                                                    </a>
+                                                @else
+                                                    <!-- Order Notification -->
+                                                    <a href="#" onclick="markNotificationSeen('{{ $notification->reference_number }}', '{{ $notification->invoice_number }}')">
+                                                        <div class="icon-circle bg-cyan">
+                                                            <i class="material-icons">add_shopping_cart</i>
+                                                        </div>
+                                                        <div class="menu-info">
+                                                            <h4>{{ $notification->reference_number }} <br> <span style="color: brown">{{ $notification->message }}</span></h4>
+                                                            <p>
+                                                                <i class="material-icons">access_time</i> {{ \Carbon\Carbon::parse($notification->notification_created_at)->diffForHumans() }}
+                                                            </p>
+                                                        </div>
+                                                    </a>
+                                                @endif
+                                            </li>
+                                        @endforeach
+                                    @endif
                                 </ul>
                             </li>
                             {{-- <li class="footer">
