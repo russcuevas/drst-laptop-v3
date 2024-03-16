@@ -46,7 +46,7 @@
                                         <li>
                                             @if($notification instanceof \App\Models\ProductNotifications)
                                                 <!-- Product Notification -->
-                                                <a href="#" onclick="">
+                                                <a href="#" onclick="markNotificationProduct('{{ $notification->id }}', '{{ $notification->product_id }}')">
                                                     <div class="icon-circle bg-orange">
                                                         <i class="material-icons">inventory_2</i>
                                                     </div>

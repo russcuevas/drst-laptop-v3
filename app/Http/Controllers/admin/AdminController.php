@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\OrderNotifications;
 use App\Models\Product;
+use App\Models\ProductNotifications;
 use App\Models\Reports;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -84,11 +85,27 @@ class AdminController extends Controller
                 ->where('orders.reference_number', $referenceNumber)
                 ->update(['order_notifications.is_seen' => true]);
 
-            return redirect()->back()->with('success', 'Notification marked as seen.');
+            // return redirect()->back()->with('success', 'Notification marked as seen.');
         } else {
-            return redirect()->back()->with('error', 'Notification not found.');
+            // return redirect()->back()->with('error', 'Notification not found.');
         }
     }
+
+    public function markNotificationProduct($id)
+    {
+        $notification = DB::table('product_notifications')->find($id);
+
+        if ($notification) {
+            DB::table('product_notifications')
+                ->where('id', $id)
+                ->update(['is_seen' => true]);
+
+            // return redirect()->back()->with('success', 'Product notification marked as seen.');
+        } else {
+            // return redirect()->back()->with('error', 'Product notification not found.');
+        }
+    }
+
 
     // display recent orders
     public function getRecentOrders()

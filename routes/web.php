@@ -93,6 +93,7 @@ Route::get('/admin/admin_dashboard', [AdminController::class, 'AdminDashboard'])
 Route::get('/admin/update_profile', [AdminController::class, 'UpdateProfile'])->name('admin.updateprofile');
 Route::post('/admin/update_profilerequest', [AdminController::class, 'UpdateProfileRequest'])->name('admin.updateprofilerequest');
 Route::post('/mark-notification-seen/{referenceNumber}', [AdminController::class, 'markNotificationAsSeen'])->name('admin.notifications.mark-as-seen');
+Route::post('/mark-product-notification-seen/{id}', [AdminController::class, 'markNotificationProduct'])->name('admin.notifications.product-as-seen');
 
 
 

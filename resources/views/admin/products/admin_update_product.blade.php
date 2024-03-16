@@ -282,9 +282,36 @@
     </script>
     <!-- Demo Js -->
     <script src="{{ asset('admin/js/demo.js') }} "></script>
-        <script>
+<script>
+        function markNotificationProduct(id, product_id) {
+            fetch(`/mark-product-notification-seen/${id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    id: id
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Notification marked as seen successfully');
+                    var url = "{{ route('admin.updateproducts', ['id' => 'REPLACE_PRODUCT_ID']) }}".replace('REPLACE_PRODUCT_ID', product_id);
+                    console.log("Constructed URL:", url);
+                    window.location.href = url;
+                } else {
+                    console.error('Failed to mark product notification as seen. Server response:', response.status);
+                }
+            })
+            .catch(error => {
+                console.error('Error marking product notification as seen:', error);
+            });
+        }
+    </script>
+
+    <script>
         function markNotificationSeen(referenceNumber, invoiceNumber) {
-            // Send a POST request to the route
             fetch(`/mark-notification-seen/${referenceNumber}`, {
                 method: 'POST',
                 headers: {
