@@ -34,110 +34,50 @@
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Notifications -->
                     <li class="dropdown">
-                        {{-- <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
+                        <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button">
                             <i class="material-icons">notifications</i>
-                            <span class="label-count">7</span>
-                        </a> --}}
+                            <span class="label-count">{{ $notifications->count() }}</span>
+                        </a>
                         <ul class="dropdown-menu">
                             <li class="header">NOTIFICATIONS</li>
                             <li class="body">
                                 <ul class="menu" style="list-style: none">
-                                    <li>
-                                        <a href="javascript:void(0);">
-                                            <div class="icon-circle bg-light-green">
-                                                <i class="material-icons">person_add</i>
-                                            </div>
-                                            <div class="menu-info">
-                                                <h4>12 new members joined</h4>
-                                                <p>
-                                                    <i class="material-icons">access_time</i> 14 mins ago
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0);">
-                                            <div class="icon-circle bg-cyan">
-                                                <i class="material-icons">add_shopping_cart</i>
-                                            </div>
-                                            <div class="menu-info">
-                                                <h4>4 sales made</h4>
-                                                <p>
-                                                    <i class="material-icons">access_time</i> 22 mins ago
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0);">
-                                            <div class="icon-circle bg-red">
-                                                <i class="material-icons">delete_forever</i>
-                                            </div>
-                                            <div class="menu-info">
-                                                <h4><b>Nancy Doe</b> deleted account</h4>
-                                                <p>
-                                                    <i class="material-icons">access_time</i> 3 hours ago
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0);">
-                                            <div class="icon-circle bg-orange">
-                                                <i class="material-icons">mode_edit</i>
-                                            </div>
-                                            <div class="menu-info">
-                                                <h4><b>Nancy</b> changed name</h4>
-                                                <p>
-                                                    <i class="material-icons">access_time</i> 2 hours ago
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0);">
-                                            <div class="icon-circle bg-blue-grey">
-                                                <i class="material-icons">comment</i>
-                                            </div>
-                                            <div class="menu-info">
-                                                <h4><b>John</b> commented your post</h4>
-                                                <p>
-                                                    <i class="material-icons">access_time</i> 4 hours ago
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0);">
-                                            <div class="icon-circle bg-light-green">
-                                                <i class="material-icons">cached</i>
-                                            </div>
-                                            <div class="menu-info">
-                                                <h4><b>John</b> updated status</h4>
-                                                <p>
-                                                    <i class="material-icons">access_time</i> 3 hours ago
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0);">
-                                            <div class="icon-circle bg-purple">
-                                                <i class="material-icons">settings</i>
-                                            </div>
-                                            <div class="menu-info">
-                                                <h4>Settings updated</h4>
-                                                <p>
-                                                    <i class="material-icons">access_time</i> Yesterday
-                                                </p>
-                                            </div>
-                                        </a>
-                                    </li>
+                                    @foreach($notifications as $notification)
+                                        <li>
+                                            @if($notification instanceof \App\Models\ProductNotifications)
+                                                <!-- Product Notification -->
+                                                <a href="#" onclick="">
+                                                    <div class="icon-circle bg-orange">
+                                                        <i class="material-icons">inventory_2</i>
+                                                    </div>
+                                                    <div class="menu-info">
+                                                        <h4>{{ $notification->product->product_name }} <br> <span style="color: brown">{{ $notification->message }}</span></h4>
+                                                        <p>
+                                                            <i class="material-icons">access_time</i> {{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}
+                                                        </p>
+                                                    </div>
+                                                </a>
+                                            @else
+                                                <!-- Order Notification -->
+                                                <a href="#" onclick="markNotificationSeen('{{ $notification->reference_number }}', '{{ $notification->invoice_number }}')">
+                                                    <div class="icon-circle bg-cyan">
+                                                        <i class="material-icons">add_shopping_cart</i>
+                                                    </div>
+                                                    <div class="menu-info">
+                                                        <h4>{{ $notification->reference_number }} <br> <span style="color: brown">{{ $notification->message }}</span></h4>
+                                                        <p>
+                                                            <i class="material-icons">access_time</i> {{ \Carbon\Carbon::parse($notification->notification_created_at)->diffForHumans() }}
+                                                        </p>
+                                                    </div>
+                                                </a>
+                                            @endif
+                                        </li>
+                                    @endforeach
                                 </ul>
                             </li>
-                            <li class="footer">
+                            {{-- <li class="footer">
                                 <a href="javascript:void(0);">View All Notifications</a>
-                            </li>
+                            </li> --}}
                         </ul>
                     </li>
                     <!-- #END# Notifications -->

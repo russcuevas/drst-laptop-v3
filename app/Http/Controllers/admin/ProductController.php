@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
@@ -18,9 +19,32 @@ class ProductController extends Controller
             if (Auth::user()->role !== 'admin') {
                 return redirect()->route('loginpage');
             } else {
+                $orderNotifications = DB::table('order_notifications')
+                    ->join('orders', 'order_notifications.order_id', '=', 'orders.id')
+                    ->select(
+                        'orders.reference_number',
+                        'orders.invoice_number',
+                        'order_notifications.message',
+                        DB::raw('MAX(orders.id) as order_id'),
+                        DB::raw('MAX(order_notifications.created_at) as notification_created_at')
+                    )
+                    ->where('order_notifications.is_seen', false)
+                    ->groupBy('orders.reference_number', 'orders.invoice_number', 'order_notifications.message')
+                    ->orderBy('notification_created_at', 'desc')
+                    ->get();
+
+                $productNotifications = \App\Models\ProductNotifications::with('product')
+                    ->where('is_seen', false)
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+
+                // Merge order and product notifications
+                $notifications = $orderNotifications->merge($productNotifications);
+
                 $products = Product::all();
                 // returning the list of product and the view
-                return view('admin.products.admin_products', compact('products'));
+                return view('admin.products.admin_products', compact('products', 'notifications'));
             }
         }
     }
@@ -32,7 +56,30 @@ class ProductController extends Controller
             if (Auth::user()->role !== 'admin') {
                 return redirect()->route('loginpage');
             } else {
-                return view('admin.products.admin_addproducts');
+                $orderNotifications = DB::table('order_notifications')
+                    ->join('orders', 'order_notifications.order_id', '=', 'orders.id')
+                    ->select(
+                        'orders.reference_number',
+                        'orders.invoice_number',
+                        'order_notifications.message',
+                        DB::raw('MAX(orders.id) as order_id'),
+                        DB::raw('MAX(order_notifications.created_at) as notification_created_at')
+                    )
+                    ->where('order_notifications.is_seen', false)
+                    ->groupBy('orders.reference_number', 'orders.invoice_number', 'order_notifications.message')
+                    ->orderBy('notification_created_at', 'desc')
+                    ->get();
+
+                $productNotifications = \App\Models\ProductNotifications::with('product')
+                    ->where('is_seen', false)
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+
+                // Merge order and product notifications
+                $notifications = $orderNotifications->merge($productNotifications);
+
+                return view('admin.products.admin_addproducts', compact('notifications'));
             }
         } else {
             return redirect()->route('loginpage');
@@ -85,13 +132,36 @@ class ProductController extends Controller
             if (Auth::user()->role !== 'admin') {
                 return redirect()->route('loginpage');
             } else {
+                $orderNotifications = DB::table('order_notifications')
+                    ->join('orders', 'order_notifications.order_id', '=', 'orders.id')
+                    ->select(
+                        'orders.reference_number',
+                        'orders.invoice_number',
+                        'order_notifications.message',
+                        DB::raw('MAX(orders.id) as order_id'),
+                        DB::raw('MAX(order_notifications.created_at) as notification_created_at')
+                    )
+                    ->where('order_notifications.is_seen', false)
+                    ->groupBy('orders.reference_number', 'orders.invoice_number', 'order_notifications.message')
+                    ->orderBy('notification_created_at', 'desc')
+                    ->get();
+
+                $productNotifications = \App\Models\ProductNotifications::with('product')
+                    ->where('is_seen', false)
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+
+                // Merge order and product notifications
+                $notifications = $orderNotifications->merge($productNotifications);
+
                 $product = Product::find($id);
                 if (!$product) {
                     return redirect()->route('admin.products')->with('error', 'Product not found');
                 }
                 // getting the product and its grain
                 $old_grain = $product->product_grain;
-                return view('admin.products.admin_update_product', compact('product', 'old_grain'));
+                return view('admin.products.admin_update_product', compact('product', 'old_grain', 'notifications'));
             }
         }
     }

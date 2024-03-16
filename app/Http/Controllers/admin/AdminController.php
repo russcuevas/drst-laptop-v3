@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\OrderNotifications;
 use App\Models\Product;
 use App\Models\Reports;
 use App\Models\User;
@@ -16,25 +17,79 @@ class AdminController extends Controller
     // admin dashboard
     public function AdminDashboard()
     {
-        // check if the role is admin or not
         if (Auth::check()) {
-            // if not it will redirect to loginpage
             if (Auth::user()->role !== 'admin') {
                 return redirect()->route('loginpage');
             } else {
-                // else it will go to dashboard
-                $get_total_users = User::count();
-                $get_total_products = Product::count();
-                $get_total_sales = Reports::sum('total_amount');
-                $get_completed = Reports::where('status', 'Delivered')->count();
+                $get_total_users = DB::table('users')->count();
+                $get_total_products = DB::table('products')->count();
+                $get_total_sales = DB::table('reports')->sum('total_amount');
+                $get_completed = DB::table('reports')->where('status', 'Delivered')->count();
                 $recentOrders = $this->getRecentOrders();
                 $get_low_stock_products = $this->getLowStockProducts();
-                return view('admin.admin_dashboard', compact('get_total_users', 'get_total_products', 'get_total_sales', 'get_completed', 'recentOrders', 'get_low_stock_products'));
+
+                $orderNotifications = DB::table('order_notifications')
+                    ->join('orders', 'order_notifications.order_id', '=', 'orders.id')
+                    ->select(
+                        'orders.reference_number',
+                        'orders.invoice_number',
+                        'order_notifications.message',
+                        DB::raw('MAX(orders.id) as order_id'),
+                        DB::raw('MAX(order_notifications.created_at) as notification_created_at')
+                    )
+                    ->where('order_notifications.is_seen', false)
+                    ->groupBy('orders.reference_number', 'orders.invoice_number', 'order_notifications.message')
+                    ->orderBy('notification_created_at', 'desc')
+                    ->get();
+
+                $productNotifications = \App\Models\ProductNotifications::with('product')
+                    ->where('is_seen', false)
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+
+                // Merge order and product notifications
+                $notifications = $orderNotifications->merge($productNotifications);
+
+                return view('admin.admin_dashboard', compact(
+                    'get_total_users',
+                    'get_total_products',
+                    'get_total_sales',
+                    'get_completed',
+                    'recentOrders',
+                    'get_low_stock_products',
+                    'notifications'
+                ));
             }
         }
-        // else not authenticated it will navigate to loginpage
+
         return redirect()->route('loginpage');
     }
+
+
+    public function markNotificationAsSeen($referenceNumber)
+    {
+        $referenceNumber = request('referenceNumber');
+        $invoiceNumber = request('invoiceNumber');
+
+        $notification = DB::table('order_notifications')
+            ->join('orders', 'order_notifications.order_id', '=', 'orders.id')
+            ->where('orders.reference_number', $referenceNumber)
+            ->select('order_notifications.*')
+            ->first();
+
+        if ($notification) {
+            DB::table('order_notifications')
+                ->join('orders', 'order_notifications.order_id', '=', 'orders.id')
+                ->where('orders.reference_number', $referenceNumber)
+                ->update(['order_notifications.is_seen' => true]);
+
+            return redirect()->back()->with('success', 'Notification marked as seen.');
+        } else {
+            return redirect()->back()->with('error', 'Notification not found.');
+        }
+    }
+
     // display recent orders
     public function getRecentOrders()
     {
@@ -76,9 +131,31 @@ class AdminController extends Controller
             if (Auth::user()->role !== 'admin') {
                 return redirect()->route('loginpage');
             } else {
+                $orderNotifications = DB::table('order_notifications')
+                    ->join('orders', 'order_notifications.order_id', '=', 'orders.id')
+                    ->select(
+                        'orders.reference_number',
+                        'orders.invoice_number',
+                        'order_notifications.message',
+                        DB::raw('MAX(orders.id) as order_id'),
+                        DB::raw('MAX(order_notifications.created_at) as notification_created_at')
+                    )
+                    ->where('order_notifications.is_seen', false)
+                    ->groupBy('orders.reference_number', 'orders.invoice_number', 'order_notifications.message')
+                    ->orderBy('notification_created_at', 'desc')
+                    ->get();
+
+                $productNotifications = \App\Models\ProductNotifications::with('product')
+                    ->where('is_seen', false)
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+
+                // Merge order and product notifications
+                $notifications = $orderNotifications->merge($productNotifications);
                 // else it will go to update profile page
                 $user = Auth::user();
-                return view('admin.profile.admin_updateprofile', compact('user'));
+                return view('admin.profile.admin_updateprofile', compact('user', 'notifications'));
             }
         } else {
             // else not authenticated it will navigate to loginpage

@@ -21,8 +21,29 @@ class AnalyticsController extends Controller
             if (Auth::user()->role !== 'admin') {
                 return redirect()->route('loginpage');
             } else {
+                $orderNotifications = DB::table('order_notifications')
+                    ->join('orders', 'order_notifications.order_id', '=', 'orders.id')
+                    ->select(
+                        'orders.reference_number',
+                        'orders.invoice_number',
+                        'order_notifications.message',
+                        DB::raw('MAX(orders.id) as order_id'),
+                        DB::raw('MAX(order_notifications.created_at) as notification_created_at')
+                    )
+                    ->where('order_notifications.is_seen', false)
+                    ->groupBy('orders.reference_number', 'orders.invoice_number', 'order_notifications.message')
+                    ->orderBy('notification_created_at', 'desc')
+                    ->get();
+
+                $productNotifications = \App\Models\ProductNotifications::with('product')
+                    ->where('is_seen', false)
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+
+                $notifications = $orderNotifications->merge($productNotifications);
                 // else it will go to analytics page
-                return view('admin.analytics.admin_analytics');
+                return view('admin.analytics.admin_analytics', compact('notifications'));
             }
         }
         // else not authenticated it will navigate to loginpage
@@ -106,7 +127,7 @@ class AnalyticsController extends Controller
                 'total_sold' => $product->total_sold,
             ];
         });
-        
+
         // response to be fetch in api
         return response()->json($pie_chart_data);
     }

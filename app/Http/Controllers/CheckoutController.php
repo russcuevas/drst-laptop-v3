@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\OrderDetails;
 use App\Models\OrderInitialStatus;
+use App\Models\OrderNotifications;
 use App\Models\Orders;
 use App\Models\OrderStatus;
 use Illuminate\Http\Request;
@@ -119,6 +120,13 @@ class CheckoutController extends Controller
                 'placed_at' => now(),
             ]);
             $orderInitialStatus->save();
+
+            $notification = new OrderNotifications([
+                'customer_id' => $customerId,
+                'order_id' => $orderId,
+                'message' => 'New orders',
+            ]);
+            $notification->save();
 
             // remove or delete the selected ordered product in the cart of the customer/users..
             $orderedProductIds = is_array($productIds[$key]) ? $productIds[$key] : [$productIds[$key]];

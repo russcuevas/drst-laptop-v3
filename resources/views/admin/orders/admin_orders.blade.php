@@ -217,6 +217,34 @@
     <script src="{{ asset('admin/js/products_management.js')}}"></script>
     <!-- Demo Js -->
     <script src="{{ asset('admin/js/demo.js')}}"></script>
+        <script>
+        function markNotificationSeen(referenceNumber, invoiceNumber) {
+            // Send a POST request to the route
+            fetch(`/mark-notification-seen/${referenceNumber}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    referenceNumber: referenceNumber,
+                    invoiceNumber: invoiceNumber
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = "{{ route('admin.orders.show', ['ReferenceNumber' => 'REPLACE_REFERENCE_NUMBER', 'InvoiceNumber' => 'REPLACE_INVOICE_NUMBER']) }}"
+                        .replace('REPLACE_REFERENCE_NUMBER', referenceNumber)
+                        .replace('REPLACE_INVOICE_NUMBER', invoiceNumber);
+                } else {
+                    console.error('Failed to mark notification as seen.');
+                }
+            })
+            .catch(error => {
+                console.error('Error marking notification as seen:', error);
+            });
+        }
+    </script>
 </body>
 
 </html>

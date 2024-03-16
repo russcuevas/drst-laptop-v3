@@ -92,6 +92,9 @@ Route::post('/registrationrequest', [AuthController::class, 'RegisterRequest'])-
 Route::get('/admin/admin_dashboard', [AdminController::class, 'AdminDashboard'])->name('admin.dashboard');
 Route::get('/admin/update_profile', [AdminController::class, 'UpdateProfile'])->name('admin.updateprofile');
 Route::post('/admin/update_profilerequest', [AdminController::class, 'UpdateProfileRequest'])->name('admin.updateprofilerequest');
+Route::post('/mark-notification-seen/{referenceNumber}', [AdminController::class, 'markNotificationAsSeen'])->name('admin.notifications.mark-as-seen');
+
+
 
 // ADMIN DASHBOARD USER CRUD
 Route::get('/admin/admin_users', [UserController::class, 'UserPage'])->name('admin.users');

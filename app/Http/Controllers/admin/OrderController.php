@@ -32,11 +32,34 @@ class OrderController extends Controller
                     ->groupBy('orders.reference_number', 'orders.invoice_number', 'orders.payment_method', 'orders.created_at', 'order_statuses.status', 'order_initial_statuses.initial_status')
                     ->get();
 
+                $orderNotifications = DB::table('order_notifications')
+                    ->join('orders', 'order_notifications.order_id', '=', 'orders.id')
+                    ->select(
+                        'orders.reference_number',
+                        'orders.invoice_number',
+                        'order_notifications.message',
+                        DB::raw('MAX(orders.id) as order_id'),
+                        DB::raw('MAX(order_notifications.created_at) as notification_created_at')
+                    )
+                    ->where('order_notifications.is_seen', false)
+                    ->groupBy('orders.reference_number', 'orders.invoice_number', 'order_notifications.message')
+                    ->orderBy('notification_created_at', 'desc')
+                    ->get();
+
+                $productNotifications = \App\Models\ProductNotifications::with('product')
+                    ->where('is_seen', false)
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+
+                // Merge order and product notifications
+                $notifications = $orderNotifications->merge($productNotifications);
+
                 $display_one_orders = $orders->unique(function ($order) {
                     return $order->reference_number;
                 });
 
-                return view('admin.orders.admin_orders', ['orders' => $display_one_orders]);
+                return view('admin.orders.admin_orders', ['orders' => $display_one_orders, 'notifications' => $notifications]);
             }
         } else {
             return redirect()->route('loginpage');
