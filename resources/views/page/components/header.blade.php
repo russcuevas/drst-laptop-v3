@@ -1,39 +1,38 @@
-    <!-- Page Preloder -->
-    <div id="preloder">
-        <div class="loader"></div>
+<!-- Page Preloder -->
+<div id="preloder">
+    <div class="loader"></div>
+</div>
+
+<div id="scroll-to-top">
+    <i class="fa fa-arrow-up"></i>
+</div>
+
+<!-- Humberger Begin -->
+<div class="humberger__menu__overlay"></div>
+<div class="humberger__menu__wrapper">
+    <div class="humberger__menu__logo">
+        <a href="#">
+            <img style="height: 100px; width: 100px;" src="https://www.vippng.com/png/full/36-362739_svg-free-rice-paddy-field-logo-circle.png" alt="">
+        </a>
     </div>
-
-    <div id="scroll-to-top">
-        <i class="fa fa-arrow-up"></i>
+    <div class="humberger__menu__cart">
+        <ul>
+            <li><a href="{{ route('view.cart') }}"><i class="fa fa-shopping-bag"></i> <span>{{ count($cart_items) }}</span></a></li>
+        </ul>
+        <div class="header__cart__price">Total: <span>₱{{ number_format($total_price, 2) }}</span></div>
     </div>
-
-   <!-- Humberger Begin -->
-        <div class="humberger__menu__overlay"></div>
-                <div class="humberger__menu__wrapper">
-                    <div class="humberger__menu__logo">
-                        <a href="#"><img style="height: 100px; width: 100px;"
-                                src="https://www.vippng.com/png/full/36-362739_svg-free-rice-paddy-field-logo-circle.png"
-                                alt=""></a>
-                    </div>
-                    <div class="humberger__menu__cart">
-                        <ul>
-                            <li><a href="{{ route('view.cart') }}"><i class="fa fa-shopping-bag"></i> <span>{{ count($cart_items) }}</span></a></li>
-                        </ul>
-                        <div class="header__cart__price">Total: <span>₱{{ number_format($total_price, 2) }}</span></div>
-                    </div>
-                    <nav class="humberger__menu__nav mobile-menu">
-                        <ul>
-                            <li class="{{ request()->routeIs('homepage') ? 'active' : '' }}"><a href="{{ route('homepage') }}">Home</a></li>
-                            <li class="{{ request()->routeIs('shoppage') ? 'active' : '' }}"><a href="{{ route('shoppage') }}">Shop</a></li>
-                            <li class="{{ request()->routeIs('myorderpage') ? 'active' : '' }}">
-                    <a href="#">Orders</a>
-                    <ul class="header__menu__dropdown">
-                        <li class="{{ request()->routeIs('myorderpage') ? 'active' : '' }}">
-                            <a href="{{ route('myorderpage') }}">Track orders</a>
-                        </li>
-                    </ul>
-                </li>
-
+    <nav class="humberger__menu__nav mobile-menu">
+        <ul>
+            <li class="{{ request()->routeIs('homepage') ? 'active' : '' }}"><a href="{{ route('homepage') }}">Home</a></li>
+            <li class="{{ request()->routeIs('shoppage') ? 'active' : '' }}"><a href="{{ route('shoppage') }}">Shop</a></li>
+            <li class="{{ request()->routeIs('myorderpage') ? 'active' : '' }}">
+                <a href="#">Orders</a>
+                <ul class="header__menu__dropdown">
+                    <li class="{{ request()->routeIs('myorderpage') ? 'active' : '' }}">
+                        <a href="{{ route('myorderpage') }}">Track orders</a>
+                    </li>
+                </ul>
+            </li>
             <li class="{{ request()->routeIs('contactpage') ? 'active' : '' }}"><a href="{{ route('contactpage')}}">Contact</a></li>
         </ul>
     </nav>
@@ -47,9 +46,9 @@
         <div class="row">
             <div class="col-lg-3">
                 <div class="header__logo">
-                    <a href="{{ route('homepage') }}" style="color: black;"><img style="height: 100px; width: 100px;"
-                            src="https://www.vippng.com/png/full/36-362739_svg-free-rice-paddy-field-logo-circle.png"
-                            alt=""> &nbsp; Dimasupil's</a>
+                    <a href="{{ route('homepage') }}" style="color: black;">
+                        <img style="height: 100px; width: 100px;" src="https://www.vippng.com/png/full/36-362739_svg-free-rice-paddy-field-logo-circle.png" alt=""> &nbsp; Dimasupil's
+                    </a>
                 </div>
             </div>
             <div class="col-lg-6">
@@ -69,41 +68,52 @@
                     </ul>
                 </nav>
             </div>
-                <div class="col-lg-3">
-                    <div class="header__cart">
-                        @auth
-                            @if(auth()->user()->role == 'customers')
-                                <ul>
-                                    <li><a href="{{ route('myprofilepage') }}" style="color: black !important"><i class="fa fa-user"></i> Profile</a></li>
-                                    <li><a href="{{ route('logoutrequest') }}" style="color: rgb(157, 16, 16) !important">Logout</a></li>
-                                    <li><a href="{{ route('view.cart') }}"><i class="fa fa-shopping-bag"></i> <span>{{ count($cart_items) }}</span></a></li>
-                                    <li>
-                                        <a href="#" id="notificationBell">
-                                            <i class="fa fa-bell"></i> <span>0</span>
-                                        </a>
-                                        <div class="notification__dropdown" id="notificationDropdown">
-                                            <a href="#" class="notification__item">Sample Notification 1</a>
-                                            <a href="#" class="notification__item">Sample Notification 2</a>
-                                        </div>
-                                    </li>
-
-                                    <div class="header__cart__price">Total: <span>₱{{ number_format($total_price, 2) }}</span></div>
-                                </ul>
-                            @elseif(auth()->user()->role == 'admin' || auth()->user()->role == 'staff')
-                                <ul>
-                                    <li><a href="{{ route('admin.dashboard') }}" style="color: black !important"><i class="fa fa-tachometer"></i> Dashboard</a></li>
-                                </ul>
-                            @endif
-                        @else
+            <div class="col-lg-3">
+                <div class="header__cart">
+                    @auth
+                        @if(auth()->user()->role == 'customers')
                             <ul>
-                                <li><a href="{{ route('loginpage') }}" style="color: black !important"><i class="fa fa-user"></i> Login</a></li>
-                                <li><a href="{{ route('registerpage' )}}" style="color: black !important"> Register</a></li>
-                                <li><a href="{{ route('view.cart') }}"><i class="fa fa-shopping-bag"></i> <span>0</span></a></li>
-                                <div class="header__cart__price">Total: <span>₱0.00</span></div>
+                                <li><a href="{{ route('myprofilepage') }}" style="color: black !important"><i class="fa fa-user"></i> Profile</a></li>
+                                <li><a href="{{ route('logoutrequest') }}" style="color: rgb(157, 16, 16) !important">Logout</a></li>
+                                <li><a href="{{ route('view.cart') }}"><i class="fa fa-shopping-bag"></i> <span>{{ count($cart_items) }}</span></a></li>
+                                <li>
+                                    <a href="#" id="notificationBell">
+                                        <i class="fa fa-bell"></i> <span>{{ $notifications->count() }}</span>
+                                    </a>
+                                    <div style="text-align: left" class="notification__dropdown" id="notificationDropdown">
+                                        @if ($notifications->isEmpty())
+                                            <p style="text-align: center; margin-top: 10px; color: brown;">No inbox found</p>
+                                        @else
+                                            @foreach ($notifications as $notification)
+                                                <a href="#" class="notification__item">
+                                                    <i class="fa fa-shopping-cart" aria-hidden="true"></i> <!-- Order icon -->
+                                                    @if ($notification->message === "New orders")
+                                                        You placed your orders {{ $notification->reference_number }}
+                                                    @else
+                                                        Admin {{ $notification->message }} {{ $notification->reference_number }}
+                                                    @endif
+                                                </a>
+                                            @endforeach
+                                        @endif
+                                    </div>
+                                </li>
+                                <div class="header__cart__price">Total: <span>₱{{ number_format($total_price, 2) }}</span></div>
                             </ul>
-                        @endauth
-                    </div>
+                        @elseif(auth()->user()->role == 'admin' || auth()->user()->role == 'staff')
+                            <ul>
+                                <li><a href="{{ route('admin.dashboard') }}" style="color: black !important"><i class="fa fa-tachometer"></i> Dashboard</a></li>
+                            </ul>
+                        @endif
+                    @else
+                        <ul>
+                            <li><a href="{{ route('loginpage') }}" style="color: black !important"><i class="fa fa-user"></i> Login</a></li>
+                            <li><a href="{{ route('registerpage' )}}" style="color: black !important"> Register</a></li>
+                            <li><a href="{{ route('view.cart') }}"><i class="fa fa-shopping-bag"></i> <span>0</span></a></li>
+                            <div class="header__cart__price">Total: <span>₱0.00</span></div>
+                        </ul>
+                    @endauth
                 </div>
+            </div>
         </div>
         <div class="humberger__open">
             <i class="fa fa-bars"></i>

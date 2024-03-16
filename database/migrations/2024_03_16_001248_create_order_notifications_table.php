@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('order_id')->nullable();
             $table->text('message');
             $table->boolean('is_seen')->default(false);
+            $table->boolean('is_customer_seen')->default(false);
             $table->timestamps();
 
             $table->foreign('customer_id')->references('id')->on('users')->onDelete('cascade');

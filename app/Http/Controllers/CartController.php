@@ -8,6 +8,7 @@ use App\Models\Cart;
 use App\Models\Product;
 use App\Models\ProductNotifications;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 
 class CartController extends Controller
@@ -110,7 +111,29 @@ class CartController extends Controller
         View::share('cart_items', $cart_items);
         View::share('total', $total);
 
-        return view('page.cart', compact('cart_items', 'total'));
+        $notifications = [];
+
+        // Check if the user is authenticated
+        if (auth()->check()) {
+            $user_id = auth()->user()->id;
+
+            $notifications = DB::table('order_notifications')
+                ->join('orders', 'order_notifications.order_id', '=', 'orders.id')
+                ->select(
+                    'orders.reference_number',
+                    'orders.invoice_number',
+                    DB::raw('MAX(order_notifications.message) AS message'),
+                    DB::raw('MAX(orders.id) as order_id'),
+                    DB::raw('MAX(order_notifications.created_at) as notification_created_at')
+                )
+                ->where('order_notifications.is_customer_seen', 0)
+                ->where('order_notifications.customer_id', $user_id)
+                ->groupBy('orders.reference_number', 'orders.invoice_number')
+                ->orderBy('notification_created_at', 'desc')
+                ->get();
+        }
+
+        return view('page.cart', compact('cart_items', 'total', 'notifications'));
     }
 
     // update the quantity in the cart

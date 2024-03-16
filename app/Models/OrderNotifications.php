@@ -13,6 +13,7 @@ class OrderNotifications extends Model
         'customer_id',
         'order_id',
         'message',
-        'is_seen'
+        'is_seen',
+        'is_customer_seen'
     ];
 }
