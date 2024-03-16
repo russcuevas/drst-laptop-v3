@@ -6,6 +6,50 @@ body {
 	font-smoothing: antialiased;
 }
 
+.notification__dropdown {
+	display: none;
+	position: absolute;
+	top: 40px;
+	/* Adjust the position according to your layout */
+	right: 10px;
+	/* Adjust the position according to your layout */
+	background-color: #ffffff;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	border-radius: 5px;
+	padding: 10px;
+	z-index: 999;
+	min-width: 200px;
+	/* Set the minimum width */
+}
+
+.notification__item {
+	padding: 10px 15px;
+	color: #333;
+	font-size: 14px;
+	transition: background-color 0.3s;
+	display: block;
+	text-decoration: none;
+}
+
+.notification__item:hover {
+	background-color: #f5f5f5;
+	color: black
+}
+
+.notification__item:last-child {
+	border-bottom: none;
+}
+
+.notification__item i {
+	margin-right: 10px;
+}
+
+.notification__empty {
+	padding: 10px;
+	text-align: center;
+	color: #666;
+}
+
 .container-box {
 	border: 1px solid black;
 	padding: 20px;
@@ -129,10 +173,10 @@ ol {
 }
 
 .set-bg {
-    background-color: rgb(246, 248, 249);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: top center;
+	background-color: rgb(246, 248, 249);
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: top center;
 }
 
 .spad {

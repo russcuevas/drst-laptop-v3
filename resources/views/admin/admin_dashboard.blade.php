@@ -116,7 +116,7 @@
                             <li class="header">NOTIFICATIONS</li>
                             <li class="body">
                                 <ul class="menu" style="list-style: none">
-@if($notifications->isEmpty())
+                                    @if($notifications->isEmpty())
                                         <li style="text-align: center; font-size: 15px; color: brown;">No inbox found</li>
                                     @else
                                         @foreach($notifications as $notification)

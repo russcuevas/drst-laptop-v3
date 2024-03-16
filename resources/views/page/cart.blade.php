@@ -183,6 +183,8 @@
     <script src="{{ asset('page/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('page/ajax/cart/update_cart.js')}}"></script>
     <script src="{{ asset('page/ajax/cart/delete_cart.js')}}"></script>
+    <script src="{{ asset('page/js/main.js') }}"></script>
+
 
 
 

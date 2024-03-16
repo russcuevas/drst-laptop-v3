@@ -8,31 +8,31 @@
     </div>
 
    <!-- Humberger Begin -->
-<div class="humberger__menu__overlay"></div>
-<div class="humberger__menu__wrapper">
-    <div class="humberger__menu__logo">
-        <a href="#"><img style="height: 100px; width: 100px;"
-                src="https://www.vippng.com/png/full/36-362739_svg-free-rice-paddy-field-logo-circle.png"
-                alt=""></a>
-    </div>
-    <div class="humberger__menu__cart">
-        <ul>
-            <li><a href="{{ route('view.cart') }}"><i class="fa fa-shopping-bag"></i> <span>{{ count($cart_items) }}</span></a></li>
-        </ul>
-        <div class="header__cart__price">Total: <span>₱{{ number_format($total_price, 2) }}</span></div>
-    </div>
-    <nav class="humberger__menu__nav mobile-menu">
-        <ul>
-            <li class="{{ request()->routeIs('homepage') ? 'active' : '' }}"><a href="{{ route('homepage') }}">Home</a></li>
-            <li class="{{ request()->routeIs('shoppage') ? 'active' : '' }}"><a href="{{ route('shoppage') }}">Shop</a></li>
-            <li class="{{ request()->routeIs('myorderpage') ? 'active' : '' }}">
-    <a href="#">Orders</a>
-    <ul class="header__menu__dropdown">
-        <li class="{{ request()->routeIs('myorderpage') ? 'active' : '' }}">
-            <a href="{{ route('myorderpage') }}">Track orders</a>
-        </li>
-    </ul>
-</li>
+        <div class="humberger__menu__overlay"></div>
+                <div class="humberger__menu__wrapper">
+                    <div class="humberger__menu__logo">
+                        <a href="#"><img style="height: 100px; width: 100px;"
+                                src="https://www.vippng.com/png/full/36-362739_svg-free-rice-paddy-field-logo-circle.png"
+                                alt=""></a>
+                    </div>
+                    <div class="humberger__menu__cart">
+                        <ul>
+                            <li><a href="{{ route('view.cart') }}"><i class="fa fa-shopping-bag"></i> <span>{{ count($cart_items) }}</span></a></li>
+                        </ul>
+                        <div class="header__cart__price">Total: <span>₱{{ number_format($total_price, 2) }}</span></div>
+                    </div>
+                    <nav class="humberger__menu__nav mobile-menu">
+                        <ul>
+                            <li class="{{ request()->routeIs('homepage') ? 'active' : '' }}"><a href="{{ route('homepage') }}">Home</a></li>
+                            <li class="{{ request()->routeIs('shoppage') ? 'active' : '' }}"><a href="{{ route('shoppage') }}">Shop</a></li>
+                            <li class="{{ request()->routeIs('myorderpage') ? 'active' : '' }}">
+                    <a href="#">Orders</a>
+                    <ul class="header__menu__dropdown">
+                        <li class="{{ request()->routeIs('myorderpage') ? 'active' : '' }}">
+                            <a href="{{ route('myorderpage') }}">Track orders</a>
+                        </li>
+                    </ul>
+                </li>
 
             <li class="{{ request()->routeIs('contactpage') ? 'active' : '' }}"><a href="{{ route('contactpage')}}">Contact</a></li>
         </ul>
@@ -77,6 +77,17 @@
                                     <li><a href="{{ route('myprofilepage') }}" style="color: black !important"><i class="fa fa-user"></i> Profile</a></li>
                                     <li><a href="{{ route('logoutrequest') }}" style="color: rgb(157, 16, 16) !important">Logout</a></li>
                                     <li><a href="{{ route('view.cart') }}"><i class="fa fa-shopping-bag"></i> <span>{{ count($cart_items) }}</span></a></li>
+                                    <li>
+                                        <a href="#" id="notificationBell">
+                                            <i class="fa fa-bell"></i> <span>0</span>
+                                        </a>
+                                        <div class="notification__dropdown" id="notificationDropdown">
+                                            <!-- Sample notification content -->
+                                            <a href="#" class="notification__item">Sample Notification 1</a>
+                                            <a href="#" class="notification__item">Sample Notification 2</a>
+                                        </div>
+                                    </li>
+
                                     <div class="header__cart__price">Total: <span>₱{{ number_format($total_price, 2) }}</span></div>
                                 </ul>
                             @elseif(auth()->user()->role == 'admin' || auth()->user()->role == 'staff')

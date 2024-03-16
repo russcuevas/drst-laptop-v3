@@ -427,6 +427,7 @@
     <script src="{{ asset('page/ajax/cart/update_cart.js')}}"></script>
     <script src="{{ asset('page/ajax/cart/delete_cart.js')}}"></script>
     <script src="{{ asset('page/plugins/sweetalert/sweetalert.min.js')}}"></script>
+    <script src="{{ asset('page/js/main.js') }}"></script>
 
     <script>
         document.getElementById('cancelButton').addEventListener('click', function() {

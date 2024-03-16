@@ -162,7 +162,6 @@
     <script src="{{ asset('page/js/main.js') }}"></script>
 
 
-
 </body>
 
 </html>
