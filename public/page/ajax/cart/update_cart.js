@@ -267,24 +267,48 @@
     $(document).ready(function () {
         function updateTotal() {
             let total = 0;
-    
+
             $('.individualCheckbox:checked').each(function () {
                 total += parseFloat($(this).data('price'));
             });
-    
+
             $('#cartTotal').text('₱' + total.toFixed(2));
         }
-    
+
         $('.individualCheckbox').change(function () {
             updateTotal();
         });
-    
+
         $('.select-all-checkbox').change(function () {
             $('.individualCheckbox').prop('checked', $(this).prop('checked'));
             updateTotal();
         });
-    
+
         updateTotal();
     });
 
 })(jQuery);
+
+document.addEventListener("DOMContentLoaded", function () {
+    var bellIcon = document.getElementById("notificationBell");
+    var dropdown = document.getElementById("notificationDropdown");
+
+    bellIcon.addEventListener("click", function (event) {
+        event.preventDefault(); // Prevent the default action of the anchor tag
+        event.stopPropagation(); // Prevent the click event from bubbling up
+
+        // Toggle the visibility of the dropdown
+        if (dropdown.style.display === "none") {
+            dropdown.style.display = "block";
+        } else {
+            dropdown.style.display = "none";
+        }
+    });
+
+    // Close the dropdown when clicking outside of it
+    document.addEventListener("click", function (event) {
+        if (!dropdown.contains(event.target)) {
+            dropdown.style.display = "none";
+        }
+    });
+});

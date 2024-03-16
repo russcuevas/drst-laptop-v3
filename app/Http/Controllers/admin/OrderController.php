@@ -133,6 +133,17 @@ class OrderController extends Controller
                     'on_process_at' => now(),
                 ]);
 
+            // notifications
+            $notificationMessage = "Updated order on process";
+            DB::table('order_notifications')
+                ->join('orders', 'order_notifications.order_id', '=', 'orders.id')
+                ->where('orders.reference_number', $referenceNumber)
+                ->where('orders.invoice_number', $invoiceNumber)
+                ->update([
+                    'order_notifications.message' => $notificationMessage,
+                    'order_notifications.is_seen' => false // or 0
+                ]);
+
             $initialStatus = 'Placed orders';
         } elseif ($status === 'On the way') {
             DB::table('orders')
@@ -152,6 +163,16 @@ class OrderController extends Controller
                 ->where('orders.invoice_number', $invoiceNumber)
                 ->update([
                     'order_initial_statuses.on_the_way_at' => $request->input('on_the_way_at'),
+                ]);
+
+            $notificationMessage = "Updated order on the way";
+            DB::table('order_notifications')
+                ->join('orders', 'order_notifications.order_id', '=', 'orders.id')
+                ->where('orders.reference_number', $referenceNumber)
+                ->where('orders.invoice_number', $invoiceNumber)
+                ->update([
+                    'order_notifications.message' => $notificationMessage,
+                    'order_notifications.is_seen' => false // or 0
                 ]);
 
             $initialStatus = 'On process';
@@ -206,6 +227,16 @@ class OrderController extends Controller
                 ->where('orders.reference_number', $referenceNumber)
                 ->where('orders.invoice_number', $invoiceNumber)
                 ->update(['order_statuses.updated_at' => now()]);
+
+            $notificationMessage = "Completed order";
+            DB::table('order_notifications')
+                ->join('orders', 'order_notifications.order_id', '=', 'orders.id')
+                ->where('orders.reference_number', $referenceNumber)
+                ->where('orders.invoice_number', $invoiceNumber)
+                ->update([
+                    'order_notifications.message' => $notificationMessage,
+                    'order_notifications.is_seen' => false // or 0
+                ]);
 
             $initialStatus = 'On the way';
         }

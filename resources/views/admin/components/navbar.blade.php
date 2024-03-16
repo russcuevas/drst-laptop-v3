@@ -55,9 +55,9 @@
                                                         </div>
                                                         <div class="menu-info">
                                                             <h4>{{ $notification->product->product_name }} <br> <span style="color: brown">{{ $notification->message }}</span></h4>
-                                                            <p>
+                                                            {{-- <p>
                                                                 <i class="material-icons">access_time</i> {{ \Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}
-                                                            </p>
+                                                            </p> --}}
                                                         </div>
                                                     </a>
                                                 @else
@@ -68,9 +68,9 @@
                                                         </div>
                                                         <div class="menu-info">
                                                             <h4>{{ $notification->reference_number }} <br> <span style="color: brown">{{ $notification->message }}</span></h4>
-                                                            <p>
+                                                            {{-- <p>
                                                                 <i class="material-icons">access_time</i> {{ \Carbon\Carbon::parse($notification->notification_created_at)->diffForHumans() }}
-                                                            </p>
+                                                            </p> --}}
                                                         </div>
                                                     </a>
                                                 @endif

@@ -82,7 +82,6 @@
                                             <i class="fa fa-bell"></i> <span>0</span>
                                         </a>
                                         <div class="notification__dropdown" id="notificationDropdown">
-                                            <!-- Sample notification content -->
                                             <a href="#" class="notification__item">Sample Notification 1</a>
                                             <a href="#" class="notification__item">Sample Notification 2</a>
                                         </div>
