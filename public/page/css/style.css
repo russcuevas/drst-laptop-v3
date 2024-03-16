@@ -20,6 +20,9 @@ body {
 	z-index: 999;
 	min-width: 200px;
 	/* Set the minimum width */
+	max-height: 200px;
+	/* Adjust as needed */
+	overflow-y: auto;
 }
 
 .notification__item {
@@ -49,6 +52,7 @@ body {
 	text-align: center;
 	color: #666;
 }
+
 
 .container-box {
 	border: 1px solid black;
