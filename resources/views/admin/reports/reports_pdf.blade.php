@@ -33,7 +33,11 @@
 </head>
 <body>
 
-    <h1>Reports</h1>
+    <?php
+        $dateTime = date("Y-m-d / H:i:s");
+    ?>
+
+    <h1>{{ $dateTime }} - Reports</h1>
 
     <table>
         <thead>

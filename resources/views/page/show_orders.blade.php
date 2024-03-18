@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="{{ asset('page/css/owl.carousel.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('page/css/slicknav.min.css') }}" type="text/css">
     <link rel="stylesheet" href="{{ asset('page/css/style.css') }}" type="text/css">
-    <link href="{{ asset('page/plugins/sweetalert/sweetalert.css')}}" rel="stylesheet" />
+    {{-- <link href="{{ asset('page/plugins/sweetalert/sweetalert.css')}}" rel="stylesheet" /> --}}
 
     <style>
         .card {
@@ -426,14 +426,29 @@
     <script src="{{ asset('page/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('page/ajax/cart/update_cart.js')}}"></script>
     <script src="{{ asset('page/ajax/cart/delete_cart.js')}}"></script>
-    <script src="{{ asset('page/plugins/sweetalert/sweetalert.min.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    {{-- <script src="{{ asset('page/plugins/sweetalert/sweetalert.min.js')}}"></script> --}}
     {{-- <script src="{{ asset('page/js/main.js') }}"></script> --}}
 
     <script>
-        document.getElementById('cancelButton').addEventListener('click', function() {
-            if (confirm('Are you sure? You won\'t be able to revert this!')) {
-                document.getElementById('cancelForm').submit();
-            }
+        function confirmCancelOrder() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You won\'t be able to revert this!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, cancel it!',
+                cancelButtonText: 'No, keep it'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('cancelForm').submit();
+                }
+            });
+        }
+
+        document.getElementById('cancelButton').addEventListener('click', function () {
+            confirmCancelOrder();
         });
     </script>
     <script>
@@ -455,9 +470,6 @@
             });
         }
     </script>
-
-
-
 
 
 

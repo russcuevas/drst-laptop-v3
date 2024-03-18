@@ -68,7 +68,7 @@
             @endif
             <div class="checkout__form">
                 <h4>Payment Details</h4>
-                <form action="{{ route('checkoutrequest') }}" method="post">
+                <form id="checkoutForm" action="{{ route('checkoutrequest') }}" method="post">
                                     @csrf
                                     <div class="row">
                                         <div class="col-lg-8 col-md-6">
@@ -151,6 +151,27 @@
     <script src="{{ asset('page/js/mixitup.min.js') }}"></script>
     <script src="{{ asset('page/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('page/js/main.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmPlaceOrder() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Do you want to place this order?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, place order',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('checkoutForm').submit();
+                }
+            });
+        }
+        document.querySelector('.site-btn').addEventListener('click', function (event) {
+            event.preventDefault();
+            confirmPlaceOrder();
+        });
+    </script>
     <script>
         function markNotificationCustomerSeen(referenceNumber) {
             $.ajax({
