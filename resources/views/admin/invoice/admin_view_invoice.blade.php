@@ -13,6 +13,7 @@
         <div class="col-md-12">
             <div class="invoice">
                 <!-- begin invoice-company -->
+                <a class="go-back" href="{{ route('admin.invoice') }}">Go back</a>
                 <div class="invoice-company text-inverse f-w-600">
                     <span class="pull-right hidden-print">
                     <a href="javascript:;" onclick="window.print()" class="btn btn-sm btn-danger m-b-10 p-l-5"><i class="fa fa-print t-plus-1 fa-fw fa-lg"></i> Print</a>
@@ -34,9 +35,11 @@
                     <div class="invoice-from">
                     <small>From</small>
                     <address class="m-t-5 m-b-5">
-                        <strong class="text-inverse">Example name</strong><br>
-                        Example address<br>
-                        Example contact<br>
+                        <strong class="text-inverse">Dimasupil's</strong><br>
+                        #1354, Sampaguita Street, Ismar Kalawaan, Pasig City<br>
+                        09478510206 - SMART<br>
+                        09957016519 - GLOBE<br>
+                        (02)-8350-4696 - PLDT<br>
                     </address>
                     </div>
                     <div class="invoice-to">
@@ -109,7 +112,7 @@
                 <!-- end invoice-content -->
                 <!-- begin invoice-note -->
                 <div class="invoice-note">
-                    * If you have any questions concerning this invoice, contact  Name, Phone Number, Email
+                    * If you have any questions concerning this invoice contact the said phone number
                 </div>
                 <!-- end invoice-note -->
                 <!-- begin invoice-footer -->

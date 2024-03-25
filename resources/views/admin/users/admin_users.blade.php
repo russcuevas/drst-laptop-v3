@@ -155,10 +155,14 @@
                                             <td>{{ $user->created_at }}</td>
                                             <td>{{ $user->updated_at }}</td>
                                             <td>
-                                                <a href="{{ route('admin.updateusers', ['id' => $user->id])}}" style="color: rgb(212, 155, 50); text-decoration: none;"><i class="fa-solid fa-pen-to-square"></i> Update</a> <br>
-                                                <a href="#" onclick="confirmDelete('{{ route('admin.deleteusersrequest', ['id' => $user->id])}}')" style="color: rgb(187, 56, 56); text-decoration: none;">
-                                                    <i class="fa-solid fa-trash"></i> Delete
-                                                </a>                                            
+                                                <a href="{{ route('admin.updateusers', ['id' => $user->id])}}" style="color: rgb(212, 155, 50); text-decoration: none;">
+                                                    <i class="fa-solid fa-pen-to-square"></i> Update
+                                                </a> <br>
+                                                @if($user->role !== 'admin')
+                                                    <a href="#" onclick="confirmDelete('{{ route('admin.deleteusersrequest', ['id' => $user->id])}}')" style="color: rgb(187, 56, 56); text-decoration: none;">
+                                                        <i class="fa-solid fa-trash"></i> Delete
+                                                    </a>
+                                                @endif
                                             </td>
                                             </tr>
                                             @endforeach

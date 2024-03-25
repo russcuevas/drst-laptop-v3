@@ -123,3 +123,9 @@
             background: #fff;
             border-color: #d9dfe3;
         }
+
+        @media print {
+            .go-back {
+                display: none;
+            }
+        }
