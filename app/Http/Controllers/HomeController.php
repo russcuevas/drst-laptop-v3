@@ -86,6 +86,7 @@ class HomeController extends Controller
             ->take(4)
             ->get();
 
+        $notifications = [];
         if (auth()->check()) {
             $user_id = auth()->user()->id;
 
