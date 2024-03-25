@@ -348,7 +348,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>&nbsp;</label>
-                                <button type="submit" class="btn btn-primary btn-block">Update</button>
+                                <button type="submit" class="btn btn-primary btn-block">Update Status</button>
                                 <a href="#" onclick="confirmCancel('{{ route('cancelorder', ['referenceNumber' => $order->reference_number, 'invoiceNumber' => $order->invoice_number]) }}')" class="btn btn-danger btn-block">Cancel Order</a>
                             </div>
                         </div>
@@ -386,7 +386,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>&nbsp;</label>
-                                <button type="submit" class="btn btn-primary btn-block">Update</button>
+                                <button type="submit" class="btn btn-primary btn-block">Update Status</button>
                             </div>
                         </div>
                     </div>
@@ -461,7 +461,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>&nbsp;</label>
-                                    <button type="submit" class="btn btn-primary btn-block">Update</button>
+                                    <button type="submit" class="btn btn-primary btn-block">Update Status</button>
                                 </div>
                             </div>
                         </div>
