@@ -49,22 +49,23 @@ class StaffController extends Controller
             ->limit(5)
             ->get();
     }
-    
+
     public function UpdateProfileStaff()
     {
-        if (Auth::check()){
-            if (Auth::user()->role !== 'staff'){
+        if (Auth::check()) {
+            if (Auth::user()->role !== 'staff') {
                 return redirect()->route('loginpage');
             } else {
                 $user = Auth::user();
-                return view ('staff.profile.staff_update_profile', compact('user'));
+                return view('staff.profile.staff_update_profile', compact('user'));
             }
         } else {
             return redirect()->route('loginpage');
         }
     }
 
-    public function UpdateProfileStaffRequest(Request $request){
+    public function UpdateProfileStaffRequest(Request $request)
+    {
         // validation for updating the profile
         $request->validate([
             'fullname' => 'required|string|max:255',

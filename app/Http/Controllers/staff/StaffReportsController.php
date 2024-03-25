@@ -21,6 +21,7 @@ class StaffReportsController extends Controller
                 return view('staff.reports.staff_reports', compact('reports'));
             }
         }
+        return redirect()->route('loginpage');
     }
 
     public function GenerateReports($type)

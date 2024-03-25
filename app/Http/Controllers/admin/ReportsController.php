@@ -45,6 +45,8 @@ class ReportsController extends Controller
                 // returning the list of reports
                 return view('admin.reports.admin_reports', compact('reports', 'notifications'));
             }
+        } else {
+            return redirect()->route('loginpage');
         }
     }
 

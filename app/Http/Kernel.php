@@ -15,6 +15,7 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         // \App\Http\Middleware\TrustHosts::class,
+        'cache-control' => \App\Http\Middleware\CacheControlMiddleware::class,
         \App\Http\Middleware\TrustProxies::class,
         \Illuminate\Http\Middleware\HandleCors::class,
         \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
