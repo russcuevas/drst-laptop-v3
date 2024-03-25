@@ -51,7 +51,7 @@ class ContactController extends Controller
             $mail->Port       = env('MAIL_PORT');
 
             $mail->setFrom(env('MAIL_FROM_ADDRESS'), env('MAIL_FROM_NAME'));
-            $mail->addAddress('russelcuevas0@gmail.com');
+            $mail->addAddress('jhoncarlomarcelino6@gmail.com');
 
             $name = $request->input('name');
             $email = $request->input('email');
