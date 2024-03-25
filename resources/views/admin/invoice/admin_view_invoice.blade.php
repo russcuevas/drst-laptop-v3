@@ -36,7 +36,7 @@
                     <small>From</small>
                     <address class="m-t-5 m-b-5">
                         <strong class="text-inverse">Dimasupil's</strong><br>
-                        #1354, Sampaguita Street, Ismar Kalawaan, Pasig City<br>
+                        #1354, Sampaguita Street, <br> Ismar Kalawaan, Pasig City<br>
                         09478510206 - SMART<br>
                         09957016519 - GLOBE<br>
                         (02)-8350-4696 - PLDT<br>

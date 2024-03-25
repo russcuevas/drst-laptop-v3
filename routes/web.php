@@ -130,7 +130,7 @@ Route::get('/admin/orders/{ReferenceNumber}/{InvoiceNumber}', [OrderController::
     ->name('admin.orders.show');
 Route::post('/update-orders-status/{referenceNumber}/{invoiceNumber}', [OrderController::class, 'updateOrdersStatus'])->name('updateOrdersStatus');
 Route::get('/candel-order/{referenceNumber}/{invoiceNumber}', [OrderController::class, 'CancelOrder'])->name('cancelorder');
-Route::get('/delete-order/{referenceNumber}/{invoiceNumber}', [OrderController::class, 'DeleteCompletedOrder'])->name('deletecompleted');
+// Route::get('/delete-order/{referenceNumber}/{invoiceNumber}', [OrderController::class, 'DeleteCompletedOrder'])->name('deletecompleted');
 
 
 // ADMIN INVOICE ORDERS
@@ -141,7 +141,7 @@ Route::get('/admin/show-invoice/{InvoiceNumber}', [InvoiceController::class, 'Sh
 
 // ADMIN REPORTS ORDERS
 Route::get('/admin/admin_reports', [ReportsController::class, 'ReportsPage'])->name('admin.reports');
-Route::get('/admin/admin_delete_reports/{id}', [ReportsController::class, 'DeleteReport'])->name('admin.deletereports');
+// Route::get('/admin/admin_delete_reports/{id}', [ReportsController::class, 'DeleteReport'])->name('admin.deletereports');
 Route::get('/admin/generate-reports/{type}', [ReportsController::class, 'GenerateReports'])->name('admin.generateReports');
 
 

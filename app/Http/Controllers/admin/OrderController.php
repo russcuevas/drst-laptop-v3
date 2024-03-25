@@ -384,17 +384,17 @@ class OrderController extends Controller
 
 
 
-    public function DeleteCompletedOrder($referenceNumber, $invoiceNumber)
-    {
-        if (Auth::check() && Auth::user()->role === 'admin') {
-            DB::table('orders')
-                ->where('reference_number', $referenceNumber)
-                ->where('invoice_number', $invoiceNumber)
-                ->delete();
+    // public function DeleteCompletedOrder($referenceNumber, $invoiceNumber)
+    // {
+    //     if (Auth::check() && Auth::user()->role === 'admin') {
+    //         DB::table('orders')
+    //             ->where('reference_number', $referenceNumber)
+    //             ->where('invoice_number', $invoiceNumber)
+    //             ->delete();
 
-            return redirect()->route('admin.orders')->with('success', 'Order deleted successfully.');
-        } else {
-            return redirect()->route('loginpage');
-        }
-    }
+    //         return redirect()->route('admin.orders')->with('success', 'Order deleted successfully.');
+    //     } else {
+    //         return redirect()->route('loginpage');
+    //     }
+    // }
 }

@@ -48,24 +48,24 @@ class ReportsController extends Controller
         }
     }
 
-    public function DeleteReport($id)
-    {
-        if (Auth::check()) {
-            if (Auth::user()->role !== 'admin') {
-                return redirect()->route('loginpage');
-            } else {
-                $reports = Reports::find($id);
-                if (!$reports) {
-                    return redirect()->route('admin.reports')->with('error', 'Reports not found');
-                } else {
-                    $reports->delete();
-                    return redirect()->route('admin.reports')->with('success', 'Reports deleted successfully');
-                }
-            }
-        } else {
-            return redirect()->route('loginpage');
-        }
-    }
+    // public function DeleteReport($id)
+    // {
+    //     if (Auth::check()) {
+    //         if (Auth::user()->role !== 'admin') {
+    //             return redirect()->route('loginpage');
+    //         } else {
+    //             $reports = Reports::find($id);
+    //             if (!$reports) {
+    //                 return redirect()->route('admin.reports')->with('error', 'Reports not found');
+    //             } else {
+    //                 $reports->delete();
+    //                 return redirect()->route('admin.reports')->with('success', 'Reports deleted successfully');
+    //             }
+    //         }
+    //     } else {
+    //         return redirect()->route('loginpage');
+    //     }
+    // }
 
     public function GenerateReports($type)
     {

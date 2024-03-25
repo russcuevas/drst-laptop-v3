@@ -348,7 +348,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>&nbsp;</label>
-                                <button type="submit" class="btn btn-primary btn-block">Edit Status</button>
+                                <button type="submit" class="btn btn-primary btn-block">Update</button>
                                 <a href="#" onclick="confirmCancel('{{ route('cancelorder', ['referenceNumber' => $order->reference_number, 'invoiceNumber' => $order->invoice_number]) }}')" class="btn btn-danger btn-block">Cancel Order</a>
                             </div>
                         </div>
@@ -386,7 +386,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>&nbsp;</label>
-                                <button type="submit" class="btn btn-primary btn-block">Edit Status</button>
+                                <button type="submit" class="btn btn-primary btn-block">Update</button>
                             </div>
                         </div>
                     </div>
@@ -461,7 +461,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>&nbsp;</label>
-                                    <button type="submit" class="btn btn-primary btn-block">Edit Status</button>
+                                    <button type="submit" class="btn btn-primary btn-block">Update</button>
                                 </div>
                             </div>
                         </div>
@@ -479,7 +479,7 @@
                             </li>
                         </ul>
                     </div>
-                <a href="#" onclick="confirmDelete('{{ route('deletecompleted', ['referenceNumber' => $order->reference_number, 'invoiceNumber' => $order->invoice_number]) }}')" class="btn btn-danger btn-block">Delete</a>
+                {{-- <a href="#" onclick="confirmDelete('{{ route('deletecompleted', ['referenceNumber' => $order->reference_number, 'invoiceNumber' => $order->invoice_number]) }}')" class="btn btn-danger btn-block">Delete</a> --}}
                 @else
                 @endif
             </form>

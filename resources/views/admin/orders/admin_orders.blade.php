@@ -155,10 +155,18 @@
                                                     @else
                                                         <td style="color: brown">Not paid</td>
                                                     @endif
-                                                    <td>
-                                                        <a href="{{ route('admin.orders.show', ['ReferenceNumber' => $order->reference_number, 'InvoiceNumber' => $order->invoice_number]) }}" style="color: rgb(212, 155, 50); text-decoration: none;"><i class="fa-solid fa-pen-to-square"></i> Update</a>
-                                                        
-                                                    </td>
+<td>
+    @if ($order->order_status !== 'Delivered')
+        <a href="{{ route('admin.orders.show', ['ReferenceNumber' => $order->reference_number, 'InvoiceNumber' => $order->invoice_number]) }}" style="color: rgb(212, 155, 50); text-decoration: none;">
+            <i class="fa-solid fa-pen-to-square"></i> Update
+        </a>
+    @else
+        <a href="{{ route('admin.orders.show', ['ReferenceNumber' => $order->reference_number, 'InvoiceNumber' => $order->invoice_number]) }}" style="color: #002b53; text-decoration: none;">
+            <i class="fa-solid fa-eye"></i> View
+        </a>
+    @endif
+</td>
+
                                                 </tr>
                                                 @php $count++ 
                                                 @endphp
