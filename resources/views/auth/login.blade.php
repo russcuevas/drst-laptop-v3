@@ -211,6 +211,7 @@
     <script src="{{ asset('page/js/mixitup.min.js') }}"></script>
     <script src="{{ asset('page/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('page/js/main.js') }}"></script>
+    
 
 
 
