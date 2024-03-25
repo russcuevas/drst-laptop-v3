@@ -161,7 +161,8 @@ class ProductController extends Controller
                 }
                 // getting the product and its grain
                 $old_grain = $product->product_grain;
-                return view('admin.products.admin_update_product', compact('product', 'old_grain', 'notifications'));
+                $old_product_net_wt = $product->product_net_wt;
+                return view('admin.products.admin_update_product', compact('product', 'old_product_net_wt', 'old_grain', 'notifications'));
             }
         }
     }

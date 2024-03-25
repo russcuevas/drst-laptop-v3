@@ -89,9 +89,13 @@
         }
 
         .col-centered{
-    float: none;
-    margin: 0 auto;
-}
+            float: none;
+            margin: 0 auto;
+        }
+
+        .dropdown-menu {
+        height: 150px;
+        }
     </style>
 </head>
 
@@ -185,16 +189,6 @@
 
                                 <div class="form-group form-float">
                                     <div class="form-line">
-                                        <input id="" type="text" autocomplete="off" class="form-control" value="{{ old('product_net_wt')}}" name="product_net_wt" required>
-                                        <label class="form-label">Rice Net Wt.</label>
-                                    </div>
-                                    @error('product_net_wt')
-                                        <label class="error">{{ $message }}</label>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group form-float">
-                                    <div class="form-line">
                                         <input id="" type="text" autocomplete="off" class="form-control" value="{{ old('product_stocks')}}" name="product_stocks" maxlength="11" required>
                                         <label class="form-label">Stocks</label>
                                     </div>
@@ -205,8 +199,22 @@
 
                                 <div class="form-group form-float">
                                     <div class="form-line">
+                                        <select class="form-control show-tick small-select" name="product_net_wt" required>
+                                            <option disabled selected>-- Select Rice Net Wt --</option>
+                                                @for ($i = 1; $i <= 100; $i++)
+                                                    <option value="{{ $i }}kg">{{ $i }}kg</option>
+                                                @endfor
+                                        </select>
+                                    </div>
+                                    @error('product_net_wt')
+                                        <label class="error">{{ $message }}</label>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group form-float">
+                                    <div class="form-line">
                                         <select name="product_grain" class="form-control show-tick" required>
-                                            <option disabled selected>-- Select grain --</option>
+                                            <option disabled selected>-- Select Grain --</option>
                                                 <option value="short grain">Short grain</option>
                                                 <option value="medium grain">Medium grain</option>
                                                 <option value="long grain">Long grain</option>

@@ -89,9 +89,13 @@
         }
 
         .col-centered{
-    float: none;
-    margin: 0 auto;
-}
+            float: none;
+            margin: 0 auto;
+        }
+
+        .dropdown-menu {
+        height: 150px;
+        }
     </style>
 </head>
 
@@ -186,20 +190,26 @@
 
                                 <div class="form-group form-float">
                                     <div class="form-line">
-                                        <input id="" type="text" autocomplete="off" class="form-control" value="{{ old('product_net_wt', $product->product_net_wt)}}" name="product_net_wt" required>
-                                        <label class="form-label">Rice Net Wt.</label>
+                                        <input id="" type="text" autocomplete="off" class="form-control" value="{{ old('product_stocks', $product->product_stocks)}}" name="product_stocks" maxlength="11" required>
+                                        <label class="form-label">Stocks</label>
                                     </div>
-                                    @error('product_net_wt')
+                                    @error('product_stocks')
                                         <label class="error">{{ $message }}</label>
                                     @enderror
                                 </div>
 
                                 <div class="form-group form-float">
                                     <div class="form-line">
-                                        <input id="" type="text" autocomplete="off" class="form-control" value="{{ old('product_stocks', $product->product_stocks)}}" name="product_stocks" maxlength="11" required>
-                                        <label class="form-label">Stocks</label>
+                                        <select class="form-control show-tick small-select" name="product_net_wt" required>
+                                            @for ($i = 1; $i <= 100; $i++)
+                                                @php
+                                                    $weight = $i . 'kg';
+                                                @endphp
+                                                <option value="{{ $weight }}" {{ $old_product_net_wt == $weight ? 'selected' : '' }}>{{ $weight }}</option>
+                                            @endfor
+                                        </select>
                                     </div>
-                                    @error('product_stocks')
+                                    @error('product_net_wt')
                                         <label class="error">{{ $message }}</label>
                                     @enderror
                                 </div>
