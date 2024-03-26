@@ -37,6 +37,11 @@ use Illuminate\Support\Facades\Route;
 // AUTH PAGE
 Route::get('/login', [AuthController::class, 'LoginPage'])->name('loginpage');
 Route::get('/registration', [AuthController::class, 'RegisterPage'])->name('registerpage');
+Route::any('/forgot-password', [AuthController::class, 'ForgotPassword'])->name('forgotpassword');
+Route::get('/password/reset/{token}', [AuthController::class, 'ForgotForm'])->name('password.reset');
+Route::post('/password/reset', [AuthController::class, 'Reset'])->name('resetform');
+
+
 
 // AUTH REQUEST
 Route::post('/loginrequest', [AuthController::class, 'LoginRequest'])->name('loginrequest');

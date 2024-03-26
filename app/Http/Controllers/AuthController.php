@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ResetPasswordMail;
+use App\Models\PasswordReset;
+
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -117,5 +123,78 @@ class AuthController extends Controller
     {
         Auth::logout();
         return redirect('/login');
+    }
+
+
+    // forgot password
+    public function ForgotPassword(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return redirect('/login')->with('error', 'This email is not found');
+        }
+
+        $token = Str::random(60);
+
+        DB::table('password_resets')->updateOrInsert(
+            ['email' => $user->email],
+            ['token' => $token, 'created_at' => now()]
+        );
+
+        $resetLink = url('/password/reset/' . $token);
+
+        Mail::to($user->email)->send(new ResetPasswordMail($user->fullname, $resetLink));
+        return redirect('/login')->with('success', 'Password reset request is sent successfully, please check your email to change your password.')->with('resetLink', $resetLink);
+    }
+
+    public function ForgotForm($token)
+    {
+        if (!$token) {
+            return redirect()->route('loginpage')->with('error', 'Invalid reset link');
+        }
+
+        $passwordReset = PasswordReset::where('token', $token)->first();
+
+        if (!$passwordReset) {
+            return redirect()->route('loginpage')->with('error', 'Token not found or has expired try again');
+        }
+
+        return view('auth.password_reset', ['token' => $token]);
+    }
+
+    public function Reset(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'token' => 'required',
+            'password' => 'required|confirmed|between:8,12',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $passwordReset = PasswordReset::where('token', $request->token)->first();
+
+        if (!$passwordReset) {
+            return redirect('/login')->with('error', 'Token expired, request a new password reset');
+        }
+
+        $user = User::where('email', $passwordReset->email)->first();
+
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        DB::table('password_resets')->where('token', $request->token)->delete();
+
+        return redirect('/login')->with('success', 'Password reset successfully');
     }
 }

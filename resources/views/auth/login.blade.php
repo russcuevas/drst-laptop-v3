@@ -162,6 +162,7 @@
                     {{ session('success') }}
                 </div>
             @endif
+            
 
             @if (session('error'))
                 <div class="alert alert-danger">
@@ -192,9 +193,33 @@
                             </div>
                         </div>
                         <div style="text-align: left; margin-top: -30px;">
-                            <a href="" style="color: red; font-weight: 900;">Forgot your password</a>
+                        <a style="color: red; font-weight: 900;" href="#" id="forgot-password-link" data-toggle="modal" data-target="#forgot-password-modal">Forgot password</a>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="forgot-password-modal" tabindex="-1" role="dialog" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="forgotPasswordModalLabel" style="font-weight: 900">Forgot Password</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="forgotPasswordForm" action="{{ route('forgotpassword') }}" method="POST" class="forgotPasswordForm">
+                            @csrf
+                            <div class="checkout__input">
+                                <p style="font-weight: 900">Email : <span></span></p>
+                                <input style="color: black; border: 2px solid black;" name="email" type="text">
+                            </div>
+                            <div style="display: flex; justify-content: end;">
+                                <button type="submit" class="site-btn mt-2">Submit</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
