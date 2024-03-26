@@ -258,3 +258,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+// submitting forgot password to prevent user in other activity
+function disableForm() {
+    document.getElementById('overlay').style.display = 'block';
+    document.body.style.cursor = 'wait';
+    document.getElementById('submitButton').disabled = true;
+}

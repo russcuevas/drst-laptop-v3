@@ -209,14 +209,14 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="forgotPasswordForm" action="{{ route('forgotpassword') }}" method="POST" class="forgotPasswordForm">
+                        <form id="forgotPasswordForm" action="{{ route('forgotpassword') }}" method="POST" class="forgotPasswordForm" onsubmit="disableForm()">
                             @csrf
                             <div class="checkout__input">
                                 <p style="font-weight: 900">Email : <span></span></p>
                                 <input style="color: black; border: 2px solid black;" name="email" type="text">
                             </div>
                             <div style="display: flex; justify-content: end;">
-                                <button type="submit" class="site-btn mt-2">Submit</button>
+                                <button id="submitButton" type="submit" class="site-btn mt-2">Submit</button>
                             </div>
                         </form>
                     </div>
@@ -224,6 +224,10 @@
             </div>
         </div>
     </section>
+
+    <div id="overlay">
+        <div id="loading-message">Submitting, please wait...</div>
+    </div>
 
     
     @include('page.components.footer')
@@ -236,6 +240,7 @@
     <script src="{{ asset('page/js/mixitup.min.js') }}"></script>
     <script src="{{ asset('page/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('page/js/main.js') }}"></script>
+
     
 
 
