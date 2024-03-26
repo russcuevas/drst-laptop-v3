@@ -106,8 +106,33 @@
                 <li class="active"><i class="material-icons">analytics</i> Analytics</li>
             </ol>
         </div>
+        
 
-        <div class="row clearfix">
+            <div class="row clearfix">
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <h2>SALES YEAR & MONTH COMPARISON</h2>
+                        <ul class="header-dropdown m-r--5">
+                        </ul>
+                    </div>
+                    <div class="body">
+                        <div style="text-align: right;">
+                            <span style="color: #0f3d71 !important;">Year Sales : </span>
+                            <select name="salesYear" id="selectYearSales"></select>
+                        </div>
+                        <div style="text-align: right;">
+                            <span style="color: #0f3d71 !important;">Year Comparison : </span>
+                            <select name="comparisonYear" id="selectYearComparison"></select>
+                        </div>
+                        <br>
+                        <canvas id="line-comparison-chart" height="170"></canvas>
+                    </div>
+                </div>
+            </div>
+
+
             <!-- Line Chart -->
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                 <div class="card">
@@ -178,9 +203,6 @@
                         <div style="text-align: right;">
                             <span style="color: #0f3d71 !important;">Year : </span>
                             <select name="" id="selectYear">
-                                <option value="2024">2024</option>
-                                <option value="2025">2025</option>
-                                <option value="2026">2026</option>
                             </select>
                             <br>
                             <span style="color: #0f3d71 !important;">Month : </span>
@@ -204,6 +226,7 @@
                     </div>
                 </div>
             </div>
+
             <!-- #END# Pie Chart -->
         </div>
     </div>

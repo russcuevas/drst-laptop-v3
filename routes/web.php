@@ -146,6 +146,8 @@ Route::middleware([CacheControlMiddleware::class])->group(
         Route::get('/monthly-sales', [AnalyticsController::class, 'GetMonthlySales'])->name('get-monthly-sales');
         Route::get('/yearly-sales', [AnalyticsController::class, 'GetYearlySales'])->name('yearly-sales');
         Route::get('/top-products', [AnalyticsController::class, 'GetTopProducts'])->name('get-top-products');
+        Route::get('/comparison-sales', [AnalyticsController::class, 'GetComparisonSales'])->name('comparison.sales');
+
         ////////////////////////// -END- /////////////////////////////////
     }
 );
