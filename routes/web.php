@@ -173,6 +173,7 @@ Route::middleware([CacheControlMiddleware::class])->group(
         Route::get('/staff-monthly-sales', [StaffAnalyticsController::class, 'GetMonthlySales'])->name('staff-get-monthly-sales');
         Route::get('/staff-yearly-sales', [StaffAnalyticsController::class, 'GetYearlySales'])->name('staff-yearly-sales');
         Route::get('/staff-top-products', [StaffAnalyticsController::class, 'GetTopProducts'])->name('staff-get-top-products');
+        Route::get('/staff-comparison-sales', [StaffAnalyticsController::class, 'GetComparisonSales'])->name('staff-comparison.sales');
         ////////////////////////// -END- /////////////////////////////////
     }
 );

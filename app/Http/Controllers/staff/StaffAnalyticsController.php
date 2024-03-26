@@ -60,19 +60,19 @@ class StaffAnalyticsController extends Controller
     public function GetYearlySales()
     {
         try {
-            $allYears = Reports::distinct()
-                ->selectRaw('YEAR(receiving_date) as year')
-                ->pluck('year');
+            $currentYear = date('Y');
+            $startYear = 2020;
 
-            $yearlySales = $allYears->map(function ($year) {
+            $yearlySales = [];
+            for ($year = $startYear; $year <= $currentYear; $year++) {
                 $totalAmount = Reports::whereYear('receiving_date', $year)->sum('total_amount');
-                return [$year => round($totalAmount, 2)];
-            })->reduce(function ($carry, $item) {
-                return $carry->merge($item);
-            }, collect());
+                $yearlySales[$year] = round($totalAmount, 2);
+            }
 
+            // response to be fetched in api
             return response()->json($yearlySales);
         } catch (\Exception $e) {
+            // exception if error, display bad request
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
@@ -96,5 +96,39 @@ class StaffAnalyticsController extends Controller
         });
 
         return response()->json($pie_chart_data);
+    }
+
+    public function GetComparisonSales(Request $request)
+    {
+        try {
+            $yearSales = $request->input('yearSales');
+            $yearComparison = $request->input('yearComparison');
+
+            $salesYearData = Reports::whereYear('receiving_date', $yearSales)
+                ->select(DB::raw('MONTH(receiving_date) as month'), DB::raw('SUM(total_amount) as total_sales'))
+                ->groupBy(DB::raw('MONTH(receiving_date)'))
+                ->pluck('total_sales', 'month')
+                ->toArray();
+
+            $comparisonYearData = Reports::whereYear('receiving_date', $yearComparison)
+                ->select(DB::raw('MONTH(receiving_date) as month'), DB::raw('SUM(total_amount) as total_sales'))
+                ->groupBy(DB::raw('MONTH(receiving_date)'))
+                ->pluck('total_sales', 'month')
+                ->toArray();
+
+            $responseData = [];
+
+            for ($month = 1; $month <= 12; $month++) {
+                $monthSales = [
+                    'sales' => isset($salesYearData[$month]) ? $salesYearData[$month] : 0,
+                    'comparison' => isset($comparisonYearData[$month]) ? $comparisonYearData[$month] : 0
+                ];
+                $responseData[$month] = $monthSales;
+            }
+
+            return response()->json($responseData);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }

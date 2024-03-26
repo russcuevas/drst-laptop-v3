@@ -1,9 +1,92 @@
+// comparison of sales
+var currentYear = new Date().getFullYear();
+var selectYearSales = document.getElementById('selectYearSales');
+var selectYearComparison = document.getElementById('selectYearComparison');
+
+for (var year = 2020; year <= currentYear; year++) {
+    var optionSales = document.createElement('option');
+    optionSales.value = year;
+    optionSales.textContent = year;
+    selectYearSales.appendChild(optionSales);
+
+    var optionComparison = document.createElement('option');
+    optionComparison.value = year;
+    optionComparison.textContent = year;
+    selectYearComparison.appendChild(optionComparison);
+}
+
+selectYearSales.value = currentYear;
+selectYearComparison.value = currentYear;
+
+selectYearSales.addEventListener('change', updateComparisonChart);
+selectYearComparison.addEventListener('change', updateComparisonChart);
+updateComparisonChart();
+
+function updateComparisonChart() {
+    selectedYearSales = parseInt(document.getElementById('selectYearSales').value);
+    selectedYearComparison = parseInt(document.getElementById('selectYearComparison').value);
+
+    fetch(`/staff-comparison-sales?yearSales=${selectedYearSales}&yearComparison=${selectedYearComparison}`)
+        .then(response => response.json())
+        .then(data => renderComparisonChart(data))
+        .catch(error => console.error('Error fetching sales comparison data:', error));
+}
+
+function renderComparisonChart(data) {
+    var ctx = document.getElementById('line-comparison-chart').getContext('2d');
+    var months = Object.keys(data);
+    var monthNames = [
+        'June', 'July', 'August', 'September', 'October', 'November', 'December',
+        'January', 'February', 'March', 'April', 'May'
+    ];
+    var weeks = monthNames.slice(0, 12);
+
+    if (window.comparisonChart) {
+        window.comparisonChart.destroy();
+    }
+
+    window.comparisonChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: weeks,
+            datasets: [{
+                label: `Sales (${selectedYearSales})`,
+                data: months.map(month => data[month].sales),
+                borderColor: '#0f3d71',
+                borderWidth: 2,
+                fill: false
+            }, {
+                label: `Sales (${selectedYearComparison})`,
+                data: months.map(month => data[month].comparison),
+                borderColor: 'red',
+                borderWidth: 2,
+                fill: false
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Month'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Sales'
+                    }
+                }
+            }
+        }
+    });
+}
+// end of comparison sales
+
 // weekly sales
 var myChart;
 var selectedYear = new Date().getFullYear();
 var selectedMonth = new Date().getMonth() + 1;
-document.getElementById('selectYear').value = selectedYear;
-document.getElementById('selectMonth').value = selectedMonth;
 
 document.getElementById('selectYear').addEventListener('change', function () {
     selectedYear = parseInt(this.value);
@@ -14,6 +97,26 @@ document.getElementById('selectMonth').addEventListener('change', function () {
     selectedMonth = parseInt(this.value);
     updateChart();
 });
+
+function populateYearSelectOptions() {
+    var currentYear = new Date().getFullYear();
+    var selectYear = document.getElementById('selectYear');
+    for (var year = 2020; year <= currentYear; year++) {
+        var optionYear = new Option(year, year);
+        selectYear.appendChild(optionYear);
+    }
+    selectYear.value = selectedYear;
+}
+
+function populateMonthSelectOptions() {
+    var selectMonth = document.getElementById('selectMonth');
+    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    for (var i = 0; i < monthNames.length; i++) {
+        var optionMonth = new Option(monthNames[i], i + 1);
+        selectMonth.appendChild(optionMonth);
+    }
+    selectMonth.value = selectedMonth;
+}
 
 function updateChart() {
     var xhr = new XMLHttpRequest();
@@ -65,7 +168,6 @@ function renderChart(data) {
 }
 
 function getStartDateOfWeek(year, week) {
-
     var startDate = new Date(year, 0, 1 + (week - 1) * 7);
     var day = startDate.getDay();
     startDate.setDate(startDate.getDate() - day + (day === 0 ? -6 : 1));
@@ -79,12 +181,14 @@ function getEndDateOfWeek(year, week) {
     return endDate.toLocaleString('default', { month: 'short', day: '2-digit' });
 }
 
+populateYearSelectOptions();
+populateMonthSelectOptions();
 updateChart();
-
-// end weekly
+// end weekly sales
 
 // monthly sales
 var selectedYearMonthly = new Date().getFullYear();
+populateWeeklyYearSelectOptions();
 document.getElementById('selectYearMonthlySales').value = selectedYearMonthly;
 
 var myBarChart;
@@ -95,6 +199,16 @@ document.getElementById('selectYearMonthlySales').addEventListener('change', fun
     selectedYearMonthly = parseInt(this.value);
     updateBarChart();
 });
+
+function populateWeeklyYearSelectOptions() {
+    var currentYear = new Date().getFullYear();
+    var selectYear = document.getElementById('selectYearMonthlySales');
+    selectYear.innerHTML = ''; // Clear existing options
+    for (var year = 2020; year <= currentYear; year++) {
+        var optionYear = new Option(year, year);
+        selectYear.appendChild(optionYear);
+    }
+}
 
 function updateBarChart() {
     var xhr = new XMLHttpRequest();
@@ -122,7 +236,6 @@ function renderBarChart(data) {
         'July', 'August', 'September', 'October', 'November', 'December'
     ];
 
-    // Create an array with sales data for each month
     var sales = monthNames.map(function (monthName, index) {
         return data[index + 1] ? parseFloat(data[index + 1].toFixed(2)) : 0;
     });
@@ -147,8 +260,8 @@ function renderBarChart(data) {
         }
     });
 }
-// end monthly sales
 
+// end monthly sales
 
 // yearly sales
 var myYearlyChart;
@@ -179,10 +292,17 @@ function renderYearlyChart(data) {
         return parseFloat(value.toFixed(2));
     });
 
+    var currentYear = new Date().getFullYear();
+    var labels = [];
+    var startIndex = 2020;
+    for (var year = startIndex; year <= currentYear; year++) {
+        labels.push(year.toString());
+    }
+
     myYearlyChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: ['2024', '2025', '2026'],
+            labels: labels,
             datasets: [{
                 label: 'Yearly sales',
                 data: yearlySales,
@@ -193,13 +313,25 @@ function renderYearlyChart(data) {
     });
 }
 
+function populateYearlySelectOptions() {
+    var currentYear = new Date().getFullYear();
+    var selectYear = document.getElementById('selectYearMonthlySales');
+    selectYear.innerHTML = '';
+    for (var year = 2020; year <= currentYear; year++) {
+        var optionYear = new Option(year, year);
+        selectYear.appendChild(optionYear);
+    }
+}
+
 updateYearlyChart();
-// end yearly sales
+populateYearlySelectOptions();
+// end year sales
 
 
-// pie-chart
+
+// top 3 product
 document.addEventListener('DOMContentLoaded', function () {
-    fetch('/top-products')
+    fetch('/staff-top-products')
         .then(response => response.json())
         .then(data => {
             updatePieChart(data);
@@ -224,4 +356,4 @@ function updatePieChart(data) {
         },
     });
 }
-// end pie chart
+// end top 3 product

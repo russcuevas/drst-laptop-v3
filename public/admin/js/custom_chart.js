@@ -52,7 +52,7 @@ function renderComparisonChart(data) {
             datasets: [{
                 label: `Sales (${selectedYearSales})`,
                 data: months.map(month => data[month].sales),
-                borderColor: 'blue',
+                borderColor: '#0f3d71',
                 borderWidth: 2,
                 fill: false
             }, {
