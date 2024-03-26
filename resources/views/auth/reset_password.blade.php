@@ -58,7 +58,7 @@
         <p>Hey Mr./Ms. {{ $fullname }},</p>
         <p>You are receiving this email because we received a password reset request for your account.</p>
         <p><strong>Reset your password:</strong></p>
-        <p><a class="reset-button" href="{{ $resetLink }}">Reset Password</a></p>
+        <p><a style="color: white" class="reset-button" href="{{ $resetLink }}">Click here</a></p>
         <p>If you did not request a password reset, no further action is required.</p>
     </div>
 </body>

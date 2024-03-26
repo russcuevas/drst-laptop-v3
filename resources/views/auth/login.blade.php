@@ -213,7 +213,7 @@
                             @csrf
                             <div class="checkout__input">
                                 <p style="font-weight: 900">Email : <span></span></p>
-                                <input style="color: black; border: 2px solid black;" name="email" type="text">
+                                <input style="color: black; border: 2px solid black;" name="email" type="text" required>
                             </div>
                             <div style="display: flex; justify-content: end;">
                                 <button id="submitButton" type="submit" class="site-btn mt-2">Submit</button>
